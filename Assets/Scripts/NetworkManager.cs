@@ -46,14 +46,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         }
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
-        connectionText.text = "Connecting to lobby...";
+        // PHIL COMMITTED 15/2: Change loading text
+        connectionText.text = "Setting up environment...";
     }
 
     /// <summary>
     /// Called on the client when you have successfully connected to a master server.
     /// </summary>
     public override void OnConnectedToMaster() {
-        PhotonNetwork.JoinLobby();
+        // PHIL COMMITTED 15/2: DISABLE LOBBY AND JOIN ROOM DIRECTLY 
+        // PhotonNetwork.JoinLobby();
+        this.JoinRoom();
     }
 
     /// <summary>
@@ -88,15 +91,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     /// </summary>
     public void JoinRoom() {
         serverWindow.SetActive(false);
-        connectionText.text = "Joining room...";
+        // PHIL COMMITTED 15/2: Change loading text
+        connectionText.text = "Setting up environment ...";
         PhotonNetwork.LocalPlayer.NickName = username.text;
         PlayerPrefs.SetString(nickNamePrefKey, username.text);
         RoomOptions roomOptions = new RoomOptions() {
             IsVisible = true,
-            MaxPlayers = 8
+            MaxPlayers = 4
         };
         if (PhotonNetwork.IsConnectedAndReady) {
-            PhotonNetwork.JoinOrCreateRoom(roomName.text, roomOptions, TypedLobby.Default);
+            PhotonNetwork.CreateRoom(roomName.text, roomOptions, TypedLobby.Default);
         } else {
             connectionText.text = "PhotonNetwork connection is not ready, try restart it.";
         }
@@ -137,11 +141,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         playerHealth.RespawnEvent += Respawn;
         playerHealth.AddMessageEvent += AddMessage;
         sceneCamera.enabled = false;
-        if (spawnTime == 0) {
-            AddMessage("Player " + PhotonNetwork.LocalPlayer.NickName + " Joined Game.");
-        } else {
-            AddMessage("Player " + PhotonNetwork.LocalPlayer.NickName + " Respawned.");
-        }
+
+        // PHIL COMMITTED 15/2: Remove message panel on start
+        // if (spawnTime == 0) {
+        //     AddMessage("Player " + PhotonNetwork.LocalPlayer.NickName + " Joined Game.");
+        // } else {
+        //     AddMessage("Player " + PhotonNetwork.LocalPlayer.NickName + " Respawned.");
+        // }
     }
 
     /// <summary>
