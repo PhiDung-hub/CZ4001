@@ -134,9 +134,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
         yield return new WaitForSeconds(spawnTime);
         messageWindow.SetActive(true);
         sightImage.SetActive(true);
-        int playerIndex = Random.Range(0, playerModel.Length);
+
+        // PHIL COMMITTED 15/2: Switch deterministic playerModel to use PolicemanController Only 
+        // int playerIndex = Random.Range(0, playerModel.Length);
         int spawnIndex = Random.Range(0, spawnPoints.Length);
-        player = PhotonNetwork.Instantiate(playerModel[playerIndex].name, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation, 0);
+        // player = PhotonNetwork.Instantiate(playerModel[playerIndex].name, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation, 0);
+        player = PhotonNetwork.Instantiate(playerModel[0].name, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation, 0);
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         playerHealth.RespawnEvent += Respawn;
         playerHealth.AddMessageEvent += AddMessage;
