@@ -10,11 +10,17 @@ public class XRGrabInteractableTwoPoints : XRGrabInteractable
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
-        if (args.interactorObject.transform.CompareTag("Left Hand")) {
+        // Left Hand grabbed the gun
+        if (args.interactorObject.transform.CompareTag("Left Hand"))
+        {
             attachTransform = leftAttachTransform;
-        } else if (args.interactorObject.transform.CompareTag("Right Hand")) {
+        }
+        // Right Hand grabbed the gun
+        else if (args.interactorObject.transform.CompareTag("Right Hand"))
+        {
             attachTransform = rightAttachTransform;
         }
+
 
         // continue XRGrabInteratable logics;
         base.OnSelectEntered(args);
