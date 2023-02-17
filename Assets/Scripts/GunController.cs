@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,12 +11,14 @@ public class GunController : MonoBehaviour
     public Transform spawnPoint;
     public float fireSpeed = 30;
 
+    const uint MAX_AMMO = 30;
     private uint ammoCount = 30;
 
     void Start()
     {
         XRGrabInteractable grabbedObject = GetComponent<XRGrabInteractable>();
         grabbedObject.activated.AddListener(FireBullet);
+        grabbedObject.activated.AddListener(Reload);
     }
 
     // Update is called once per frame
@@ -31,6 +34,25 @@ public class GunController : MonoBehaviour
             Destroy(spawnedBullet, 5);
             ammoCount -= 1;
         }
+    }
+
+    public void Reload(ActivateEventArgs arg)
+    {
+        // if (arg.interactorObject is XRController)
+        // {
+        //     Debug.Log("A Button pressed, reloading");
+        // }
+
+        // if (arg.interactorObject is XRController xRController &&
+        //     xrController.isPressed(InputHelpers.Button.PrimaryButton))
+        // {
+
+        //     uint reloadAmmount = MAX_AMMO - ammoCount;
+        //     ammoCount = MAX_AMMO;
+        // }
+
+
+        // Some logic to 
     }
 
 
