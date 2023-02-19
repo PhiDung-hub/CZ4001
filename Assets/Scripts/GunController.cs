@@ -13,7 +13,7 @@ public class GunController : XRGrabInteractable
     public Transform spawnPoint;
     public float fireSpeed = 30;
     const uint MAX_AMMO = 30;
-    private uint ammoCount = 30;
+    public uint ammoCount = 0;
     public InputActionProperty reloadAction;
     public TextMeshProUGUI ammoCountText;
 
@@ -22,6 +22,7 @@ public class GunController : XRGrabInteractable
     // Audio utils
     public AudioSource audioSource;
     public AudioClip gunshotAudio;
+    public AudioClip outOfAmmoAudio;
     public AudioClip reloadAudio;
     public AudioClip pickupAudio;
     public AudioClip removeAudio;
@@ -31,12 +32,11 @@ public class GunController : XRGrabInteractable
     public Transform rightAttachTransform;
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
-        // Left Hand grabbed the gun
+        // Fix transform for attach object
         if (args.interactorObject.transform.CompareTag("Left Hand"))
         {
             attachTransform = leftAttachTransform;
         }
-        // Right Hand grabbed the gun
         else if (args.interactorObject.transform.CompareTag("Right Hand"))
         {
             attachTransform = rightAttachTransform;
@@ -46,7 +46,6 @@ public class GunController : XRGrabInteractable
         base.OnSelectEntered(args);
     }
 
-    UnityEvent reloadEvent;
     void Start()
     {
         // Fire Bullet
@@ -57,14 +56,6 @@ public class GunController : XRGrabInteractable
         ammoCountText.enabled = false;
         base.selectEntered.AddListener(onGunPickedUp);
         base.selectExited.AddListener(onGunRemoved);
-
-
-        // Reload
-        if (reloadEvent == null)
-        {
-            reloadEvent = new UnityEvent();
-        }
-        reloadEvent.AddListener(Reload);
     }
 
     // Update is called once per frame
@@ -74,7 +65,6 @@ public class GunController : XRGrabInteractable
         bool isGunSelected = base.isSelected;
         if (reloadActionTrigged && isGunSelected)
         {
-            reloadEvent.Invoke();
         }
     }
 
@@ -88,6 +78,7 @@ public class GunController : XRGrabInteractable
     {
         audioSource.PlayOneShot(pickupAudio);
         ammoCountText.enabled = true;
+        ammoCount = PlayerController.ammoCount;
         interactorTag = args.interactorObject.transform.tag;
         Debug.Log(interactorTag);
     }
@@ -111,21 +102,32 @@ public class GunController : XRGrabInteractable
             ammoCount -= 1;
             UpdateAmmoCountText();
         }
+        else
+        {
+            audioSource.PlayOneShot(outOfAmmoAudio);
+
+        }
     }
 
 
-    void Reload()
+    public void Reload(uint reloadAmount)
     {
         audioSource.PlayOneShot(reloadAudio);
-        StartCoroutine(ReloadCoroutine(1.0f));
+        StartCoroutine(ReloadCoroutine(1.0f, reloadAmount));
     }
 
-    IEnumerator ReloadCoroutine(float reloadTime)
+    IEnumerator ReloadCoroutine(float reloadTime, uint reloadAmount)
     {
         yield return new WaitForSeconds(reloadTime);
 
-        uint reloadAmount = MAX_AMMO - ammoCount;
-        ammoCount = MAX_AMMO;
+        if (reloadAmount > MAX_AMMO - ammoCount)
+        {
+            ammoCount = MAX_AMMO;
+        }
+        else
+        {
+            ammoCount += reloadAmount;
+        }
         UpdateAmmoCountText();
     }
 }
