@@ -5,48 +5,44 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(AudioSource))]
 public class MoveEventListener : MonoBehaviour
 {
-    [SerializeField] private AudioClip[] FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
-    [SerializeField] private AudioClip JumpSound;           // the sound played when character leaves the ground.
-    [SerializeField] private AudioClip LandingSound;           // the sound played when character touches back on ground.
-    private AudioSource AudioSource;
+    [SerializeField] private AudioClip[] FootstepSounds;
+    [SerializeField] private AudioClip JumpSound;
+    [SerializeField] private AudioClip LandingSound;
+    public AudioSource AudioSource;
     [SerializeField] private InputActionReference JumpButton;
-    [SerializeField] private float _jumpHeight = 1.0f;
+    [SerializeField] private float _jumpHeight;
     [SerializeField] private InputActionReference MoveButton;
-    [SerializeField] private float _stepInterval = 1f;
-    [SerializeField] private float _moveSpeed = 2f;
+    [SerializeField] private float _stepInterval;
+    [SerializeField] private float _stepSampleRate;
 
     private CharacterController _characterController;
     private Vector3 _velocity;
 
     [SerializeField] private float _stepCycle;
     [SerializeField] private float _nextStep;
+    [SerializeField] private bool _isJumping;
 
-
-    private void OnEnable()
-    {
-        JumpButton.action.performed += Jumping;
-        MoveButton.action.performed += ProgressStepCycle;
-    }
 
     // TODO: Add sound when player moves forward/backward 
     void Start()
     {
-        AudioSource = GetComponent<AudioSource>();
         _characterController = GetComponent<CharacterController>();
-        _stepCycle = 0f;
-        _nextStep = _stepCycle / 2;
+        _jumpHeight = 1;
+        _stepSampleRate = 2.0f;
+        _stepInterval = 1.0f;
+        JumpButton.action.performed += Jumping;
+        MoveButton.action.performed += ProgressStepCycle;
     }
 
 
     private void FixedUpdate()
     {
-        if (_characterController.isGrounded && _velocity.y < 0)
+        if (_characterController.isGrounded && _isJumping)
         {
+            _isJumping = false;
             PlayLandingSound();
-            _velocity.y = 0;
         }
 
         float delta = Time.deltaTime;
@@ -68,7 +64,8 @@ public class MoveEventListener : MonoBehaviour
 
     private void Jumping(InputAction.CallbackContext obj)
     {
-        if (!_characterController.isGrounded) return;
+        if (!_characterController.isGrounded || _isJumping) return;
+        _isJumping = true;
         PlayJumpSound();
         _velocity.y = Mathf.Sqrt(_jumpHeight * -2.0f * Physics.gravity.y); // v = sqrt(2gh)
     }
@@ -87,14 +84,11 @@ public class MoveEventListener : MonoBehaviour
 
     void ProgressStepCycle(InputAction.CallbackContext obj)
     {
-        if (_characterController.velocity.sqrMagnitude > 0.0f)
-        {
-            _stepCycle += (_characterController.velocity.magnitude + _moveSpeed) * Time.fixedDeltaTime;
-        }
+        _stepCycle += _stepSampleRate * Time.fixedDeltaTime;
         if (!(_nextStep < _stepCycle)) return;
 
         _nextStep = _stepCycle + _stepInterval;
-        // PlayFootStepSound();
+        PlayFootStepSound();
     }
     private void PlayFootStepSound()
     {

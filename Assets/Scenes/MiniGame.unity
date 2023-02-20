@@ -6386,11 +6386,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b9b330bc58becaf4c83405a296eed4cd, type: 3}
   JumpSound: {fileID: 8300000, guid: 5ce4dad6a72dedb4a9c7563519224973, type: 3}
   LandingSound: {fileID: 8300000, guid: 56b69bcaa51c7c446a12cad0f0f83b6f, type: 3}
+  AudioSource: {fileID: 1639905159}
   JumpButton: {fileID: -7530998330254080707, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _jumpHeight: 1
   MoveButton: {fileID: 6972639530819350904, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  _stepInterval: 0.5
+  _stepInterval: 1
   _moveSpeed: 2
+  _stepCycle: 0
+  _nextStep: 0
 --- !u!114 &1639905148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6703,7 +6706,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
