@@ -3,7 +3,7 @@
 #   binary  These files are binary and should be left untouched.
 
 # Auto detect text files and perform CRLF normalization, since all team members are on windows.
-* text=crlf 
+* text=lf 
 # The above will handle all files NOT found below
 
 # SOURCE CODE

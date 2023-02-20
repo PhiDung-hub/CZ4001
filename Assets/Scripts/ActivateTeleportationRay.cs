@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class ActivateTeleportationRay : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class ActivateTeleportationRay : MonoBehaviour
 
     public InputActionProperty leftActivate;
     public InputActionProperty leftCancel;
-    
+
     public InputActionProperty rightActivate;
     public InputActionProperty rightCancel;
 
