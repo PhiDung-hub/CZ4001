@@ -4,21 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
+using TMPro;
 
 public class GunController : MonoBehaviour
 {
     public GameObject bullet;
     public Transform spawnPoint;
     public float fireSpeed = 30;
+    public TextMeshProUGUI ammoCountText;
+    
+    public TextMeshProUGUI hitCountText;
+    public uint hitCount = 0;
 
     const uint MAX_AMMO = 30;
-    private uint ammoCount = 30;
+    private uint ammoCount = 200;
 
     void Start()
     {
         XRGrabInteractable grabbedObject = GetComponent<XRGrabInteractable>();
         grabbedObject.activated.AddListener(FireBullet);
         grabbedObject.activated.AddListener(Reload);
+        SetCountText();
+        
     }
 
     // Update is called once per frame
@@ -33,24 +40,25 @@ public class GunController : MonoBehaviour
             spawnedBullet.GetComponent<Rigidbody>().velocity = spawnPoint.forward * fireSpeed;
             Destroy(spawnedBullet, 5);
             ammoCount -= 1;
+            SetCountText();
+
         }
     }
+    public void SetCountText()
+    {   
+        ammoCountText.text = "Ammo Count: " + ammoCount.ToString();
+        hitCountText.text = "Target Shoot: " + hitCount.ToString();
+    }
+
+
 
     public void Reload(ActivateEventArgs arg)
     {
-        // if (arg.interactorObject is XRController)
-        // {
-        //     Debug.Log("A Button pressed, reloading");
+        // XRController xrController = (XRController) arg.interactorObject;
+        // if (xrController.IsPressed(InputHelpers.Button.PrimaryButton)) {
+        // //     uint reloadAmmount = MAX_AMMO - ammoCount;
+        // //     ammoCount = MAX_AMMO;
         // }
-
-        // if (arg.interactorObject is XRController xRController &&
-        //     xrController.isPressed(InputHelpers.Button.PrimaryButton))
-        // {
-
-        //     uint reloadAmmount = MAX_AMMO - ammoCount;
-        //     ammoCount = MAX_AMMO;
-        // }
-
 
         // Some logic to 
     }
