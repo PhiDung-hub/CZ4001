@@ -10,6 +10,9 @@ public class targetController : MonoBehaviour
     public GameObject gun;
     public GameObject attackText;
     private GunController gun_info;
+    public float offset_x;
+    public float offset_y;
+    public float offset_z;
 
     void Start()
     {
@@ -24,8 +27,8 @@ public class targetController : MonoBehaviour
             
             
             GameObject showingTextObject = Instantiate(attackText) as GameObject;
-            Vector3 offset = new Vector3( 2, 0, 1 );
-            showingTextObject.transform.localPosition = gameObject.transform.localPosition + offset;
+            Vector3 offset = new Vector3( offset_x, offset_y, offset_z );
+            showingTextObject.transform.localPosition = gameObject.transform.position + offset;
             // showingTextObject.transform.localScale = gameObject.transform.localScale;            
             Debug.Log(showingTextObject.transform.position);
             Destroy(showingTextObject, 2);
