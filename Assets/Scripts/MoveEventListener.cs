@@ -84,12 +84,14 @@ public class MoveEventListener : MonoBehaviour
 
     void ProgressStepCycle(InputAction.CallbackContext obj)
     {
+        Debug.Log(_characterController.velocity.magnitude);
         _stepCycle += _stepSampleRate * Time.fixedDeltaTime;
         if (!(_nextStep < _stepCycle)) return;
 
         _nextStep = _stepCycle + _stepInterval;
         PlayFootStepSound();
     }
+
     private void PlayFootStepSound()
     {
         if (!_characterController.isGrounded) return;

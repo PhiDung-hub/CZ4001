@@ -9,7 +9,7 @@ public class GameStateManager : MonoBehaviour
     public TextMeshProUGUI timeElapsedText;
     public TextMeshProUGUI winText;
     public uint targetRemaining;
-    const uint TOTAL_TARGET = 1;
+    const uint TOTAL_TARGET = 12;
     private bool gameEnded;
 
 
