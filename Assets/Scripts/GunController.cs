@@ -37,6 +37,7 @@ public class GunController : XRGrabInteractable
     {
         PlaySoundNonOverlapped(removeAudio);
         ammoCountText.enabled = false;
+        transform.SetParent(null); // Reset parent transform
     }
 
     public void FireBullet(ActivateEventArgs arg)
@@ -67,7 +68,6 @@ public class GunController : XRGrabInteractable
             {
                 attachTransform = rightAttachTransform;
             }
-
         }
         FixTransformGun(args);
 
@@ -79,6 +79,9 @@ public class GunController : XRGrabInteractable
             UpdateAmmoCountText();
         }
         onGunPickedUp(args);
+
+
+        transform.SetParent(args.interactorObject.transform);
 
         base.OnSelectEntered(args);
     }
