@@ -42,12 +42,12 @@ public class GameStateManager : MonoBehaviour
         if (targetRemaining == 0)
         {
             winText.enabled = true;
-            winText.text = string.Format("You Win!\nTime = {0}", displayTime((uint)Time.time));
+            winText.text = string.Format("You Win <sprite=3>!\n<sprite=16> {0}", displayTime((uint)Time.time));
             gameEnded = true;
             timeElapsedText.enabled = false;
             targetRemainingText.enabled = false;
         }
-        targetRemainingText.text = targetRemaining.ToString() + " left";
+        targetRemainingText.text = targetRemaining.ToString() + " <sprite=18> left";
     }
 
     void SetTimeText(uint seconds)
@@ -63,7 +63,7 @@ public class GameStateManager : MonoBehaviour
         uint secs = seconds % 60;
         seconds = secs;
 
-        return string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, secs);
+        return string.Format("<sprite=16> {0:00}:{1:00}:{2:00}", hours, minutes, secs);
     }
 
     public void stateEnd()

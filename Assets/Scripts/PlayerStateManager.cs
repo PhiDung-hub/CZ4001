@@ -18,6 +18,6 @@ public class PlayerStateManager : MonoBehaviour
 
     public void UpdateAmmoCountText()
     {
-        ammoCountText.text = string.Format("{0}", ammoCount);
+        ammoCountText.text = string.Format("{0} <sprite=17>", ammoCount);
     }
 }

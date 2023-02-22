@@ -121,6 +121,6 @@ public class GunController : XRGrabInteractable
         audioSource.Play();
     }
 
-    void UpdateAmmoCountText() => ammoCountText.text = string.Format("{0}/{1}", ammoCount, MAX_AMMO);
+    void UpdateAmmoCountText() => ammoCountText.text = string.Format("{0}/{1} <sprite=17>", ammoCount, MAX_AMMO);
 }
 
