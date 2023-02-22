@@ -12,6 +12,8 @@ public class GameStateManager : MonoBehaviour
     const uint TOTAL_TARGET = 12;
     private bool gameEnded;
 
+    public uint minutes;
+
 
     void Start()
     {
@@ -52,9 +54,17 @@ public class GameStateManager : MonoBehaviour
     string displayTime(uint seconds)
     {
         uint hours = seconds / 3600;
-        uint minutes = (seconds % 3600) / 60;
+        minutes = (seconds % 3600) / 60;
         uint secs = seconds % 60;
 
         return string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, secs);
+    }
+
+    public void stateEnd(){
+        winText.enabled = true;
+        winText.text = string.Format("End!!!\nTime = {0} \n {1} Target Attacked ", displayTime((uint)Time.time), TOTAL_TARGET-targetRemaining);
+        gameEnded = true;
+        timeElapsedText.enabled = false;
+        targetRemainingText.enabled = false;
     }
 }

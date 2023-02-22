@@ -25,6 +25,7 @@ public class TargetController : MonoBehaviour
             Vector3 offset = new Vector3( offset_x, offset_y, offset_z );
             showingTextObject.transform.localPosition = gameObject.transform.position + offset;
             // showingTextObject.transform.localScale = gameObject.transform.localScale;            
+            showingTextObject.transform.localRotation = gameObject.transform.localRotation;            
             Debug.Log(showingTextObject.transform.position);
             Destroy(showingTextObject, 2);
             gameObject.SetActive(false);
