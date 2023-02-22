@@ -22,7 +22,7 @@ public class EndController : MonoBehaviour
     void Update(){
         // End by time
         if(mode == 1){
-            if (state_info.minutes >= 1){
+            if (state_info.seconds >= 1 * 60){
                 state_info.stateEnd();
             }
         }

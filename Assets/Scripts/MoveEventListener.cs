@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(AudioSource))]
 public class MoveEventListener : MonoBehaviour
 {
     [SerializeField] private AudioClip[] FootstepSounds;

@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+[RequireComponent(typeof(AudioSource))]
 public class GunController : XRGrabInteractable
 {
     public GameObject bullet;
@@ -80,7 +81,6 @@ public class GunController : XRGrabInteractable
             UpdateAmmoCountText();
         }
         onGunPickedUp(args);
-
 
         transform.SetParent(args.interactorObject.transform);
 

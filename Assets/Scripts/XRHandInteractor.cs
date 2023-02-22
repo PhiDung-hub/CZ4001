@@ -6,6 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class XRHandInteractor : XRDirectInteractor
 {
     public InputActionProperty reloadGunAction;
+    public GameStateManager stateManager;
 
     GunController Gun;
     AmmoController Ammo;

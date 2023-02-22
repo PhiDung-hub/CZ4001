@@ -11,8 +11,7 @@ public class GameStateManager : MonoBehaviour
     public uint targetRemaining;
     const uint TOTAL_TARGET = 12;
     private bool gameEnded;
-
-    public uint minutes;
+    public uint seconds;
 
 
     void Start()
@@ -30,6 +29,12 @@ public class GameStateManager : MonoBehaviour
             uint seconds = (uint)Time.time;
             SetTimeText(seconds);
         }
+    }
+
+    public void toggleMenu()
+    {
+        timeElapsedText.enabled = !timeElapsedText.enabled;
+        targetRemainingText.enabled = !targetRemainingText.enabled;
     }
 
     public void UpdateTargetRemainingText()
@@ -54,15 +59,17 @@ public class GameStateManager : MonoBehaviour
     string displayTime(uint seconds)
     {
         uint hours = seconds / 3600;
-        minutes = (seconds % 3600) / 60;
+        uint minutes = (seconds % 3600) / 60;
         uint secs = seconds % 60;
+        seconds = secs;
 
         return string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, secs);
     }
 
-    public void stateEnd(){
+    public void stateEnd()
+    {
         winText.enabled = true;
-        winText.text = string.Format("End!!!\nTime = {0} \n {1} Target Attacked ", displayTime((uint)Time.time), TOTAL_TARGET-targetRemaining);
+        winText.text = string.Format("End!!!\nTime = {0} \n {1} Target Attacked ", displayTime((uint)Time.time), TOTAL_TARGET - targetRemaining);
         gameEnded = true;
         timeElapsedText.enabled = false;
         targetRemainingText.enabled = false;

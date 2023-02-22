@@ -424,7 +424,7 @@
                     "path": "<XRController>{LeftHand}/menuButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Generic XR Controller",
+                    "groups": "",
                     "action": "Menu Button",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -974,7 +974,7 @@
                     "path": "<XRController>{RightHand}/menuButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Generic XR Controller",
+                    "groups": "",
                     "action": "Menu Button",
                     "isComposite": false,
                     "isPartOfComposite": false
