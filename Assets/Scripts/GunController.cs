@@ -9,7 +9,7 @@ public class GunController : XRGrabInteractable
     public Transform spawnPoint;
     public float fireSpeed = 30;
     public const uint MAX_AMMO = 30;
-    public uint ammoCount = 0;
+    public uint ammoCount;
     public TextMeshProUGUI ammoCountText;
 
 
@@ -28,6 +28,7 @@ public class GunController : XRGrabInteractable
     private void Start()
     {
         ammoCountText.enabled = false;
+        ammoCount = 20;
 
         base.activated.AddListener(FireBullet);
         base.selectExited.AddListener(OnGunRemoved);

@@ -18,7 +18,7 @@ public class MoveEventListener : MonoBehaviour
     [SerializeField] private float _stepSampleRate;
 
     private CharacterController _characterController;
-    private Vector3 _velocity;
+    private Vector3 _fallVelocity;
 
     [SerializeField] private float _stepCycle;
     [SerializeField] private float _nextStep;
@@ -31,12 +31,22 @@ public class MoveEventListener : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _jumpHeight = 1;
         _stepSampleRate = 2.0f;
-        _stepInterval = 1.0f;
+        _stepInterval = 0.0008f;
         JumpButton.action.performed += Jumping;
         MoveButton.action.performed += ProgressStepCycle;
     }
 
 
+    public Vector3 previousPosition = new Vector3();
+    public Vector3 currentPosition = new Vector3();
+    public Vector3 velocity;
+    private void Update()
+    {
+        previousPosition = currentPosition;
+        currentPosition = transform.position;
+        velocity = currentPosition - previousPosition;
+
+    }
     private void FixedUpdate()
     {
         if (_characterController.isGrounded && _isJumping)
@@ -46,8 +56,8 @@ public class MoveEventListener : MonoBehaviour
         }
 
         float delta = Time.deltaTime;
-        _velocity += Physics.gravity * delta;
-        _characterController.Move(_velocity * delta);
+        _fallVelocity += Physics.gravity * delta;
+        _characterController.Move(_fallVelocity * delta);
     }
 
     // Collide simulation with other objects
@@ -64,10 +74,10 @@ public class MoveEventListener : MonoBehaviour
 
     private void Jumping(InputAction.CallbackContext obj)
     {
-        if (!_characterController.isGrounded || _isJumping) return;
+        if (_isJumping) return;
         _isJumping = true;
         PlayJumpSound();
-        _velocity.y = Mathf.Sqrt(_jumpHeight * -2.0f * Physics.gravity.y); // v = sqrt(2gh)
+        _fallVelocity.y = Mathf.Sqrt(_jumpHeight * -2.0f * Physics.gravity.y); // v = sqrt(2gh)
     }
 
     private void PlayJumpSound()
@@ -84,21 +94,24 @@ public class MoveEventListener : MonoBehaviour
 
     void ProgressStepCycle(InputAction.CallbackContext obj)
     {
-        Debug.Log(_characterController.velocity.magnitude);
-        _stepCycle += _stepSampleRate * Time.fixedDeltaTime;
+        float groundVelocityMagnitude = velocity.x * velocity.x + velocity.y * velocity.y;
+        if (_characterController.isGrounded)
+        {
+            _stepCycle += _stepSampleRate * Time.deltaTime * groundVelocityMagnitude;
+        }
         if (!(_nextStep < _stepCycle)) return;
 
         _nextStep = _stepCycle + _stepInterval;
         PlayFootStepSound();
     }
 
-    private void PlayFootStepSound()
+    private void PlayFootStepSound(float volume = 0.6f)
     {
         if (!_characterController.isGrounded) return;
 
         int i = Random.Range(1, FootstepSounds.Length);
         AudioSource.clip = FootstepSounds[i];
-        AudioSource.PlayOneShot(AudioSource.clip);
+        AudioSource.PlayOneShot(AudioSource.clip, volume);
         FootstepSounds[i] = FootstepSounds[0];
         FootstepSounds[0] = AudioSource.clip;
     }
