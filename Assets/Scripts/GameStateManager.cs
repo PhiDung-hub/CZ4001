@@ -8,6 +8,7 @@ public class GameStateManager : MonoBehaviour
     public TextMeshProUGUI targetRemainingText;
     public TextMeshProUGUI timeElapsedText;
     public TextMeshProUGUI winText;
+    public TextMeshProUGUI notificationText;
     public uint targetRemaining;
     const uint TOTAL_TARGET = 12;
     private bool gameEnded;
@@ -18,6 +19,7 @@ public class GameStateManager : MonoBehaviour
     {
         gameEnded = false;
         winText.enabled = false;
+        notificationText.enabled = false;
         targetRemaining = TOTAL_TARGET;
         UpdateTargetRemainingText();
     }
@@ -47,6 +49,14 @@ public class GameStateManager : MonoBehaviour
             timeElapsedText.enabled = false;
             targetRemainingText.enabled = false;
         }
+        elif (targetRemaining == 6){
+            notificationText.enabled = true;
+            notificationText.text = string.Format("Second Floor is accessible.\n\nPlease use the boxes to build your staircase !");
+
+            timeElapsedText.enabled = false;
+            targetRemainingText.enabled = false;
+        }
+
         targetRemainingText.text = targetRemaining.ToString() + " <sprite=18> left";
     }
 
