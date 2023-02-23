@@ -32,7 +32,7 @@ public class MoveEventListener : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _jumpHeight = 1;
         _stepSampleRate = 2.0f;
-        _stepInterval = 0.0008f;
+        _stepInterval = 0.005f;
         JumpButton.action.performed += Jumping;
         MoveButton.action.performed += ProgressStepCycle;
     }
